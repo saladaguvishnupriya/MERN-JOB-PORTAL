@@ -8,6 +8,7 @@ import SalaryPage from "../assets/pages/SalaryPage";
 import UpdateJob from "../assets/pages/UpdateJob";
 import Login from "../Components/Login";
 import JobDetails from "../assets/pages/JobDetails";
+import Signup from "../Components/Signup";
 
 const router = createBrowserRouter([
     {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     {
       path: "/login",
       element: <Login/>
+    },
+    {
+      path: "/signup",
+      element: <Signup/>
     }
   ]);
 

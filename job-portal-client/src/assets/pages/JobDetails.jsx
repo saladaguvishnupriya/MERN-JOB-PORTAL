@@ -29,6 +29,7 @@ const JobDetails = () => {
         <h1>{job.jobTitle}</h1>
 
         <button className='bg-blue px-8 py-2 text-white' onClick={handleApply}>Apply Now</button>
+        <p>{job.description}</p>
     </div>
   )
 }

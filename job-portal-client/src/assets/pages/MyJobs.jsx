@@ -1,23 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const MyJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   // set current page
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
 
   useEffect(() => {
     setIsLoading(true);
-    fetch("http://localhost:5000/myJobs/vishnusaladagu001@gmail.com")
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setUser(storedUser);
+    
+    fetch(`http://localhost:5000/myJobs/${storedUser.email}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setJobs(data);
         setIsLoading(false);
-      });
+      });}else {
+        // Handle case where email is not present
+        setError('No email provided');
+        setIsLoading(false);
+      }
   }, [searchText]);
 
   // pagination

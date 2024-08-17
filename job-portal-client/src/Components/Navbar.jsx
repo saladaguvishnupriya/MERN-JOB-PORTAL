@@ -1,14 +1,31 @@
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState,useEffect } from "react";
+import { Link, NavLink ,useNavigate} from "react-router-dom";
 import { FaBarsStaggered, FaXmark } from "react-icons/fa6";
+
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [user, setUser] = useState(null);
   const handleMenuToggler = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    // Clear user data from localStorage
+    localStorage.removeItem('user');
+    // Update local state
+    setUser(null);
+    // Optionally, redirect the user to the login page or home page
+    navigate('/'); // or navigate('/') to go to the home page
+  };
 
+  useEffect(() => {
+    // Retrieve user data from localStorage
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
   const navItems = [
     { path: "/", title: "Start a search" },
     { path: "/my-job", title: "My Jobs" },
@@ -54,8 +71,19 @@ const Navbar = () => {
 
         {/* sigup and login btn */}
         <div className="text-base text-primary font-medium space-x-5 hidden lg:block">
+        {user ? (
+            <>
+              <span>Welcome, {user.name}</span>
+              <button onClick={handleLogout} className="py-2 px-5 border rounded bg-blue text-white">
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
           <Link to="/login" className="py-2 px-5 border rounded"> Log in</Link>
-          <Link to="/sign-up"className="py-2 px-5 border rounded bg-blue text-white">Sign up</Link>
+          <Link to="/signup"className="py-2 px-5 border rounded bg-blue text-white">Sign up</Link>
+          </>
+        )}
         </div>
 
         {/* moblie menu */}
